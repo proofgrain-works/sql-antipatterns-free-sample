@@ -1,0 +1,59 @@
+# 許諾の適用範囲
+
+Proofgrain Works — 実行して学ぶSQLアンチパターン：5ケース — 0.3.0
+公開元: https://github.com/proofgrain-works/sql-antipatterns-free-sample
+解説はCC BY 4.0、コード・実行fixtureはMIT。再利用時は適用noticeを保持し、解説を改変した場合は変更したことを表示してください。
+
+HTML/Markdownの文章はCC BY 4.0、HTML構造・埋込SQL・コードブロックはMITです。
+JSONの実行fixture・期待値・metadataはMITです。license本文はその正規本文として収録します。
+独自のAI禁止・非商用・共有禁止条件は追加しません。商標や推薦関係の許諾ではありません。
+公開部分と共通コードを将来の有料版へ含めても、既存の許諾を狭める前提は置きません。
+適用対象はこの配布物です。Factory全体や未収録55ケースへの許諾ではありません。
+
+正式本文: LICENSES/CC-BY-4.0.txt / LICENSES/MIT.txt
+
+- ASSERTION-CONTRACT.md: mixed
+- COMPATIBILITY.md: mixed
+- LICENSE.txt: mixed
+- LICENSES/CC-BY-4.0.txt: license-text
+- LICENSES/MIT.txt: license-text
+- PURCHASE-NOTICE.md: mixed
+- README.md: mixed
+- RELEASE-NOTES.md: mixed
+- RIGHTS-AND-DEPENDENCIES.md: mixed
+- SUPPORT.md: mixed
+- assets/style.css: MIT
+- cases/sqlite-average-of-averages-009/assertions.json: MIT
+- cases/sqlite-average-of-averages-009/bad.sql: MIT
+- cases/sqlite-average-of-averages-009/good.sql: MIT
+- cases/sqlite-average-of-averages-009/index.html: mixed
+- cases/sqlite-average-of-averages-009/schema.sql: MIT
+- cases/sqlite-function-wrapped-index-031/assertions.json: MIT
+- cases/sqlite-function-wrapped-index-031/bad.sql: MIT
+- cases/sqlite-function-wrapped-index-031/good.sql: MIT
+- cases/sqlite-function-wrapped-index-031/index.html: mixed
+- cases/sqlite-function-wrapped-index-031/schema.sql: MIT
+- cases/sqlite-insert-or-replace-cascade-025/assertions.json: MIT
+- cases/sqlite-insert-or-replace-cascade-025/bad.sql: MIT
+- cases/sqlite-insert-or-replace-cascade-025/good.sql: MIT
+- cases/sqlite-insert-or-replace-cascade-025/index.html: mixed
+- cases/sqlite-insert-or-replace-cascade-025/schema.sql: MIT
+- cases/sqlite-natural-join-shared-column-043/assertions.json: MIT
+- cases/sqlite-natural-join-shared-column-043/bad.sql: MIT
+- cases/sqlite-natural-join-shared-column-043/good.sql: MIT
+- cases/sqlite-natural-join-shared-column-043/index.html: mixed
+- cases/sqlite-natural-join-shared-column-043/schema.sql: MIT
+- cases/sqlite-not-in-null-001/assertions.json: MIT
+- cases/sqlite-not-in-null-001/bad.sql: MIT
+- cases/sqlite-not-in-null-001/good.sql: MIT
+- cases/sqlite-not-in-null-001/index.html: mixed
+- cases/sqlite-not-in-null-001/schema.sql: MIT
+- concepts/index.html: mixed
+- families/index.html: mixed
+- index.html: mixed
+- license-index.json: MIT
+- manifest.json: MIT
+- run_assertions.py: MIT
+- run_scenarios.py: MIT
+- sql_evaluator.py: MIT
+- technical-scenarios.json: MIT

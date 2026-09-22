@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "case_id": "sqlite-insert-or-replace-cascade-025",
+  "base_content_sha256": "798eecfcb8f03b591176348fdb0ca92e17cec82e58382a8b33c7f578fd1c7316",
+  "effective_content_sha256": "de15d942010e976c01485d52c84889e5df57a9ee449074906b10db0891e024d4",
+  "setup": "schema_only",
+  "assertions": [
+    {
+      "sql": "SELECT id || ':' || name FROM bad_users;",
+      "expected": [
+        "2:Akira"
+      ],
+      "purpose": "REPLACEが既存id=1を保持せずid=2の新しい行へ置き換えることを再現する"
+    },
+    {
+      "sql": "SELECT COUNT(*) FROM bad_sessions;",
+      "expected": [
+        0
+      ],
+      "purpose": "REPLACE時の暗黙の削除がON DELETE CASCADEを発火させることを確認する"
+    },
+    {
+      "sql": "SELECT id || ':' || name FROM good_users;",
+      "expected": [
+        "1:Akira"
+      ],
+      "purpose": "UPSERTのDO UPDATEが既存行のidを保ったまま対象列だけ更新することを確認する"
+    },
+    {
+      "sql": "SELECT user_id FROM good_sessions;",
+      "expected": [
+        1
+      ],
+      "purpose": "改善版では既存行が削除されず参照中のセッションも保持されることを検証する"
+    }
+  ]
+}

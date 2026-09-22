@@ -1,0 +1,18 @@
+<!-- HTML structure: MIT; prose: CC BY 4.0; marked code: MIT. -->
+<!doctype html>
+<html lang="ja-JP">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NULLを含み得るサブクエリにNOT INを使う</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<a class="skip" href="#main">本文へ</a>
+<header><a href="../../index.html">実行して学ぶSQLアンチパターン：5ケース</a></header>
+<main id="main"><h1>NULLを含み得るサブクエリにNOT INを使う</h1><section data-license="CC-BY-4.0"><p>顧客一覧から、まだ注文していない人を探します。customersは顧客、ordersは注文です。orders.customer_idは注文した顧客のidで、NULLは顧客が未確定の注文を表します。</p><h2>入力表</h2><div class="table-scroll" tabindex="0" role="region" aria-label="入力：customers（顧客）"><table data-license="MIT" id="table-customers"><caption data-license="CC-BY-4.0">入力：customers（顧客）</caption><thead><tr><th scope="col">id</th><th scope="col">name</th></tr></thead><tbody><tr><td>1</td><td>Aki</td></tr><tr><td>2</td><td>Beni</td></tr><tr><td>3</td><td>Chika</td></tr></tbody></table></div><div class="table-scroll" tabindex="0" role="region" aria-label="入力：orders（注文）"><table data-license="MIT" id="table-orders"><caption data-license="CC-BY-4.0">入力：orders（注文）</caption><thead><tr><th scope="col">id</th><th scope="col">customer_id</th></tr></thead><tbody><tr><td>101</td><td>1</td></tr><tr><td>102</td><td>NULL</td></tr></tbody></table></div><h2>目的と期待結果</h2><p>注文と対応しない顧客だけを、id順に取り出します。Akiには注文101があるため除き、BeniとChikaを残したい場面です。</p><div class="table-scroll" tabindex="0" role="region" aria-label="期待結果／改善SQLの結果"><table data-license="MIT" id="table-expected"><caption data-license="CC-BY-4.0">期待結果／改善SQLの結果</caption><thead><tr><th scope="col">id</th><th scope="col">name</th></tr></thead><tbody><tr><td>2</td><td>Beni</td></tr><tr><td>3</td><td>Chika</td></tr></tbody></table></div><h2>必要な仕組み</h2><p>NOT INは候補の値すべてとの比較を否定します。候補にNULLが混ざると、1と一致しない2や3でも結果は不明となり、WHEREを通りません。NOT EXISTSは顧客ごとに一致する注文が存在するかを調べるため、顧客未確定の注文に影響されません。</p><h2>問い</h2><p>この入力表でNOT INを使うと、BeniとChikaを残せるでしょうか。NULLの注文102を除いた場合とも比べてください。</p><h2>問題SQL</h2><pre data-license="MIT"><code>SELECT id, name FROM customers WHERE id NOT IN (SELECT customer_id FROM orders) ORDER BY id;</code></pre><div class="table-scroll" tabindex="0" role="region" aria-label="問題SQLの結果（0行）"><table data-license="MIT" id="table-observed"><caption data-license="CC-BY-4.0">問題SQLの結果（0行）</caption><thead><tr><th scope="col">id</th><th scope="col">name</th></tr></thead><tbody><tr><td colspan="2">0行（該当なし）</td></tr></tbody></table></div><h2>予想と理由</h2><p>元fixtureの未注文顧客は2と3です。NULLを含むNOT INは0行、NOT EXISTSは2と3を返します。NULL行を除くと両方2と3、注文を空にすると両方1・2・3です。</p><h2>改善SQL</h2><pre data-license="MIT"><code>SELECT c.id, c.name FROM customers AS c WHERE NOT EXISTS (SELECT 1 FROM orders AS o WHERE o.customer_id = c.id) ORDER BY c.id;</code></pre><p>改善SQLの結果は上の「期待結果」の表と一致します。</p><h2>条件と限界</h2><p>左辺idは非NULLの主キーです。左辺もNULLを取り得る場合まで同じ説明を一般化しません。</p><h2>次に確かめること</h2><p>「未登録を探す」SQLでは、右側のNULL可否と空集合を先に確認してください。次の009では、集計する一件の意味を確認します。</p><p>任意の実行方法はトップとREADMEを参照してください。schema.sqlはassertions用で、操作済みの状態を含むケースがあります。問題SQLと改善SQLの連続実行手順ではありません。</p><p>参照（SQLite公式・2026-09-21確認）: https://www.sqlite.org/lang_expr.html</p></section><footer><p>Proofgrain Works — 実行して学ぶSQLアンチパターン：5ケース — 0.3.0
+公開元: https://github.com/proofgrain-works/sql-antipatterns-free-sample
+解説はCC BY 4.0、コード・実行fixtureはMIT。再利用時は適用noticeを保持し、解説を改変した場合は変更したことを表示してください。
+</p><a href="../../LICENSE.txt">許諾の適用範囲</a></footer></main>
+</body>
+</html>

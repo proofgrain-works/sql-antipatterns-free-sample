@@ -1,0 +1,219 @@
+{
+  "schema_version": 1,
+  "task_id": "sql_antipatterns",
+  "release_version": "v1",
+  "sqlite_version": "3.53.4",
+  "scenarios": [
+    {
+      "id": "scenario_025_bad_replace_clean_db",
+      "case_id": "sqlite-insert-or-replace-cascade-025",
+      "effective_content_sha256": "de15d942010e976c01485d52c84889e5df57a9ee449074906b10db0891e024d4",
+      "matcher": "rows_v1",
+      "connection_mode": "autocommit",
+      "setup": [
+        {
+          "kind": "inline_sql",
+          "field": null,
+          "assertion_number": null,
+          "inline_sql": "PRAGMA foreign_keys=ON;\nCREATE TABLE bad_users (id INTEGER PRIMARY KEY, email TEXT NOT NULL UNIQUE, name TEXT NOT NULL);\nCREATE TABLE bad_sessions (id INTEGER PRIMARY KEY, user_id INTEGER NOT NULL REFERENCES bad_users(id) ON DELETE CASCADE);\nINSERT INTO bad_users VALUES (1,'a@example.test','Aki'); INSERT INTO bad_sessions VALUES (10,1);"
+        }
+      ],
+      "steps": [
+        {
+          "id": "run_bad_sql",
+          "operation": "execute_script",
+          "source": {
+            "kind": "case_field",
+            "field": "bad_sql",
+            "assertion_number": null,
+            "inline_sql": null
+          },
+          "expectation": {
+            "outcome": "success",
+            "expected": [],
+            "sqlite_error_code": null,
+            "sqlite_error_name": null,
+            "message_token": null
+          },
+          "in_transaction": false
+        }
+      ],
+      "recovery": {
+        "operation": "none",
+        "in_transaction": false
+      },
+      "post_state_assertions": [
+        {
+          "sql": "SELECT id,name FROM bad_users;",
+          "matcher": "rows_v1",
+          "expected": [
+            [
+              2,
+              "Akira"
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT COUNT(*) FROM bad_sessions;",
+          "matcher": "rows_v1",
+          "expected": [
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "id": "scenario_025_good_upsert_clean_db",
+      "case_id": "sqlite-insert-or-replace-cascade-025",
+      "effective_content_sha256": "de15d942010e976c01485d52c84889e5df57a9ee449074906b10db0891e024d4",
+      "matcher": "rows_v1",
+      "connection_mode": "autocommit",
+      "setup": [
+        {
+          "kind": "inline_sql",
+          "field": null,
+          "assertion_number": null,
+          "inline_sql": "PRAGMA foreign_keys=ON;\nCREATE TABLE good_users (id INTEGER PRIMARY KEY, email TEXT NOT NULL UNIQUE, name TEXT NOT NULL);\nCREATE TABLE good_sessions (id INTEGER PRIMARY KEY, user_id INTEGER NOT NULL REFERENCES good_users(id) ON DELETE CASCADE);\nINSERT INTO good_users VALUES (1,'a@example.test','Aki'); INSERT INTO good_sessions VALUES (10,1);"
+        }
+      ],
+      "steps": [
+        {
+          "id": "run_good_sql",
+          "operation": "execute_script",
+          "source": {
+            "kind": "case_field",
+            "field": "good_sql",
+            "assertion_number": null,
+            "inline_sql": null
+          },
+          "expectation": {
+            "outcome": "success",
+            "expected": [],
+            "sqlite_error_code": null,
+            "sqlite_error_name": null,
+            "message_token": null
+          },
+          "in_transaction": false
+        }
+      ],
+      "recovery": {
+        "operation": "none",
+        "in_transaction": false
+      },
+      "post_state_assertions": [
+        {
+          "sql": "SELECT id,name FROM good_users;",
+          "matcher": "rows_v1",
+          "expected": [
+            [
+              1,
+              "Akira"
+            ]
+          ]
+        },
+        {
+          "sql": "SELECT user_id FROM good_sessions;",
+          "matcher": "rows_v1",
+          "expected": [
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "id": "scenario_031_scan_semantics",
+      "case_id": "sqlite-function-wrapped-index-031",
+      "effective_content_sha256": "40db54450f3a03b700f52ed451b73061455b6b8bdb6768a6d7bd350bf074a8af",
+      "matcher": "eqp_semantics_v1",
+      "connection_mode": "autocommit",
+      "setup": [
+        {
+          "kind": "case_field",
+          "field": "schema_sql",
+          "assertion_number": null,
+          "inline_sql": null
+        }
+      ],
+      "steps": [
+        {
+          "id": "explain_bad",
+          "operation": "execute",
+          "source": {
+            "kind": "inline_sql",
+            "field": null,
+            "assertion_number": null,
+            "inline_sql": "EXPLAIN QUERY PLAN SELECT id FROM payments WHERE amount_cents / 100 = 50;"
+          },
+          "expectation": {
+            "outcome": "success",
+            "expected": {
+              "matcher": "eqp_semantics_v1",
+              "access": "SCAN",
+              "table": "payments",
+              "index": null,
+              "constraints": []
+            },
+            "sqlite_error_code": null,
+            "sqlite_error_name": null,
+            "message_token": null
+          },
+          "in_transaction": false
+        }
+      ],
+      "recovery": {
+        "operation": "none",
+        "in_transaction": false
+      },
+      "post_state_assertions": []
+    },
+    {
+      "id": "scenario_031_search_semantics",
+      "case_id": "sqlite-function-wrapped-index-031",
+      "effective_content_sha256": "40db54450f3a03b700f52ed451b73061455b6b8bdb6768a6d7bd350bf074a8af",
+      "matcher": "eqp_semantics_v1",
+      "connection_mode": "autocommit",
+      "setup": [
+        {
+          "kind": "case_field",
+          "field": "schema_sql",
+          "assertion_number": null,
+          "inline_sql": null
+        }
+      ],
+      "steps": [
+        {
+          "id": "explain_good",
+          "operation": "execute",
+          "source": {
+            "kind": "inline_sql",
+            "field": null,
+            "assertion_number": null,
+            "inline_sql": "EXPLAIN QUERY PLAN SELECT id FROM payments WHERE amount_cents >= 5000 AND amount_cents < 5100;"
+          },
+          "expectation": {
+            "outcome": "success",
+            "expected": {
+              "matcher": "eqp_semantics_v1",
+              "access": "SEARCH",
+              "table": "payments",
+              "index": "idx_payments_amount",
+              "constraints": [
+                "amount_cents>?",
+                "amount_cents<?"
+              ]
+            },
+            "sqlite_error_code": null,
+            "sqlite_error_name": null,
+            "message_token": null
+          },
+          "in_transaction": false
+        }
+      ],
+      "recovery": {
+        "operation": "none",
+        "in_transaction": false
+      },
+      "post_state_assertions": []
+    }
+  ]
+}

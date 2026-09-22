@@ -1,0 +1,18 @@
+<!-- HTML structure: MIT; prose: CC BY 4.0; marked code: MIT. -->
+<!doctype html>
+<html lang="ja-JP">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>インデックス列を式で包んで検索する</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<a class="skip" href="#main">本文へ</a>
+<header><a href="../../index.html">実行して学ぶSQLアンチパターン：5ケース</a></header>
+<main id="main"><h1>インデックス列を式で包んで検索する</h1><section data-license="CC-BY-4.0"><p>paymentsは支払い一覧です。amount_centsは整数のセント単位で、100セントが1単位です。この列には通常のインデックスidx_payments_amountがあります。</p><h2>入力表</h2><div class="table-scroll" tabindex="0" role="region" aria-label="入力：payments（金額はセント）"><table data-license="MIT" id="table-payments"><caption data-license="CC-BY-4.0">入力：payments（金額はセント）</caption><thead><tr><th scope="col">id</th><th scope="col">amount_cents</th></tr></thead><tbody><tr><td>1</td><td>4999</td></tr><tr><td>2</td><td>5000</td></tr><tr><td>3</td><td>5050</td></tr><tr><td>4</td><td>5099</td></tr><tr><td>5</td><td>5100</td></tr><tr><td>6</td><td>12000</td></tr></tbody></table></div><div class="table-scroll" tabindex="0" role="region" aria-label="入力から抜き出した境界値"><table data-license="MIT" id="table-bounds"><caption data-license="CC-BY-4.0">入力から抜き出した境界値</caption><thead><tr><th scope="col">id</th><th scope="col">amount_cents</th></tr></thead><tbody><tr><td>1</td><td>4999</td></tr><tr><td>2</td><td>5000</td></tr><tr><td>4</td><td>5099</td></tr><tr><td>5</td><td>5100</td></tr></tbody></table></div><h2>目的と期待結果</h2><p>50単位以上51単位未満、つまり5000以上5100未満の支払いidを取り出します。境界4999と5100を除き、5000・5050・5099のid=2,3,4を残します。</p><div class="table-scroll" tabindex="0" role="region" aria-label="期待結果／改善SQLの結果"><table data-license="MIT" id="table-expected"><caption data-license="CC-BY-4.0">期待結果／改善SQLの結果</caption><thead><tr><th scope="col">id</th></tr></thead><tbody><tr><td>2</td></tr><tr><td>3</td></tr><tr><td>4</td></tr></tbody></table></div><h2>必要な仕組み</h2><p>この正の整数fixtureではamount_cents / 100が整数除算となり、5000〜5099は50です。ただし列を式で包む条件は、この通常インデックスによる範囲探索になりません。列自体を5000以上5100未満と比較すると、同じ結果を範囲探索で探せます。</p><h2>問い</h2><p>両方のSQLでid=2,3,4が返っても、何を追加で確認すれば探索方法の違いが分かるでしょうか。</p><h2>問題SQL</h2><pre data-license="MIT"><code>SELECT id FROM payments WHERE amount_cents / 100 = 50 ORDER BY id;</code></pre><div class="table-scroll" tabindex="0" role="region" aria-label="問題SQLの結果（結果は同じ）"><table data-license="MIT" id="table-observed"><caption data-license="CC-BY-4.0">問題SQLの結果（結果は同じ）</caption><thead><tr><th scope="col">id</th></tr></thead><tbody><tr><td>2</td></tr><tr><td>3</td></tr><tr><td>4</td></tr></tbody></table></div><h2>予想と理由</h2><p>5000以上5100未満が対象で、fixtureのidは2・3・4です。式の条件と範囲条件の結果は同じですが、固定fixtureでは前者SCAN、後者は名前付きindexのSEARCHを確認します。</p><h2>改善SQL</h2><pre data-license="MIT"><code>SELECT id FROM payments WHERE amount_cents &gt;= 5000 AND amount_cents &lt; 5100 ORDER BY id;</code></pre><p>改善SQLの結果は上の「期待結果」の表と一致します。</p><h2>条件と限界</h2><p>query planは実測速度ではありません。速度倍率や別SQLite版での同一planを保証しません。負数や別の丸め規則には別の境界定義が必要です。</p><h2>次に確かめること</h2><p>EXPLAIN QUERY PLANのSCANとSEARCH、使用indexと範囲条件を確認します。この固定fixtureでは問題側SCAN、改善側SEARCHですが、速度の倍率や他環境での計画は保証しません。</p><p>任意の実行方法はトップとREADMEを参照してください。schema.sqlはassertions用で、操作済みの状態を含むケースがあります。問題SQLと改善SQLの連続実行手順ではありません。</p><p>参照（SQLite公式・2026-09-21確認）: https://www.sqlite.org/eqp.html</p></section><footer><p>Proofgrain Works — 実行して学ぶSQLアンチパターン：5ケース — 0.3.0
+公開元: https://github.com/proofgrain-works/sql-antipatterns-free-sample
+解説はCC BY 4.0、コード・実行fixtureはMIT。再利用時は適用noticeを保持し、解説を改変した場合は変更したことを表示してください。
+</p><a href="../../LICENSE.txt">許諾の適用範囲</a></footer></main>
+</body>
+</html>

@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "case_id": "sqlite-natural-join-shared-column-043",
+  "base_content_sha256": "ae901a5632ed682bf925f7c283d0407f4344462f3f9c71734042adb97d79f2ab",
+  "effective_content_sha256": "ae901a5632ed682bf925f7c283d0407f4344462f3f9c71734042adb97d79f2ab",
+  "setup": "schema_only",
+  "assertions": [
+    {
+      "sql": "SELECT employee_id, employee_name, badge_id FROM employees NATURAL JOIN badges ORDER BY employee_id;",
+      "expected": [
+        [
+          3,
+          "Ren",
+          103
+        ]
+      ],
+      "purpose": "NATURAL JOINがemployee_idとstatusの両方を条件にして正当な2行を落とすことを再現する"
+    },
+    {
+      "sql": "SELECT e.employee_id, e.employee_name, b.badge_id FROM employees AS e JOIN badges AS b ON b.employee_id=e.employee_id ORDER BY e.employee_id;",
+      "expected": [
+        [
+          1,
+          "Aki",
+          101
+        ],
+        [
+          2,
+          "Mio",
+          102
+        ],
+        [
+          3,
+          "Ren",
+          103
+        ]
+      ],
+      "purpose": "明示したキー結合が3件すべての従業員とバッジの対応を返すことを検証する"
+    },
+    {
+      "sql": "SELECT (SELECT COUNT(*) FROM employees NATURAL JOIN badges), (SELECT COUNT(*) FROM employees AS e JOIN badges AS b ON b.employee_id=e.employee_id);",
+      "expected": [
+        [
+          1,
+          3
+        ]
+      ],
+      "purpose": "暗黙の追加条件により結果が3件から1件へ欠落することを確認する"
+    },
+    {
+      "sql": "SELECT e.employee_id FROM employees AS e JOIN badges AS b ON b.employee_id=e.employee_id WHERE e.status <> b.status ORDER BY e.employee_id;",
+      "expected": [
+        1,
+        2
+      ],
+      "purpose": "同名status列は異なる概念であり、不一致でもemployee_idの対応は有効だと示す"
+    }
+  ]
+}

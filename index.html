@@ -1,0 +1,18 @@
+<!-- HTML structure: MIT; prose: CC BY 4.0; marked code: MIT. -->
+<!doctype html>
+<html lang="ja-JP">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>実行して学ぶSQLアンチパターン：5ケース</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<a class="skip" href="#main">本文へ</a>
+<header><a href="index.html">実行して学ぶSQLアンチパターン：5ケース</a></header>
+<main id="main"><h1>実行して学ぶSQLアンチパターン：5ケース</h1><section data-license="CC-BY-4.0"><h2>この教材でできること</h2><p>表の値を見て、目的に合うSQLかを考える5ケースです。正しい構文でも、NULL、集計の単位、更新方法、探索条件、結合キーによって意図と違う結果になります。各ケースは入力表から始まり、期待結果とSQLを比較して読めます。</p><h2>対象読者</h2><p>SELECTを書いたことがあり、結果が合う理由まで確かめたい方の自習・勉強会向けです。各ページだけでも読めるよう、表と列の意味を説明しています。</p><h2>前提知識と始め方</h2><p>表・行・列、SELECT、WHEREの基礎を前提にします。NULL、平均の分母、外部キー、インデックス、JOINは必要な箇所で説明します。読むだけならインストールやSQL実行は不要です。</p><h2>5ケースの関係</h2><p>043と001は「残るはずの行が消える」、009は「計算の一件が変わる」、025は「更新のつもりで行を消す」、031は「結果は同じでも探し方が変わる」例です。どれも先に欲しい結果を定めてからSQLを読む練習です。</p><h2>読む順序</h2><p>最初は043で二つの表と目的を対応付け、001→009→025→031へ進む順を勧めます。結果が消える条件、平均の単位、更新で残すもの、同じ結果でも異なる探索方法へと視点を広げます。</p><ol><li><a href="cases/sqlite-natural-join-shared-column-043/index.html">NATURAL JOINで同名列を暗黙の結合条件にする</a></li><li><a href="cases/sqlite-not-in-null-001/index.html">NULLを含み得るサブクエリにNOT INを使う</a></li><li><a href="cases/sqlite-average-of-averages-009/index.html">グループ平均を単純平均して全体平均を求める</a></li><li><a href="cases/sqlite-insert-or-replace-cascade-025/index.html">既存行の更新にINSERT OR REPLACEを使う</a></li><li><a href="cases/sqlite-function-wrapped-index-031/index.html">インデックス列を式で包んで検索する</a></li></ol><p>各ページで入力表と期待結果を比べ、問いを考えてからSQLを読みます。表とSQLが横に長いときは、その枠内を横スクロールしてください。</p><p><a href="families/index.html">ファミリー索引</a> · <a href="concepts/index.html">概念索引</a></p><h2>任意の実行</h2><p>任意の実行にはPython 3.11以上と、そのPythonが使うSQLite 3.53.4 exactが必要です。SQLite CLIだけのversion確認では足りません。最低Python条件は全Python版で検証済みという意味ではなく、その他のSQLite versionは未検証です。SQLite/Python binaryは同梱しません。</p><p>手順は同梱README.mdを参照してください。読むだけでも比較できます。</p><p>有料版は検討中・価格未定です。販売、予約、投げ銭、通知登録、email収集は行いません。</p></section><footer><p>Proofgrain Works — 実行して学ぶSQLアンチパターン：5ケース — 0.3.0
+公開元: https://github.com/proofgrain-works/sql-antipatterns-free-sample
+解説はCC BY 4.0、コード・実行fixtureはMIT。再利用時は適用noticeを保持し、解説を改変した場合は変更したことを表示してください。
+</p><a href="LICENSE.txt">許諾の適用範囲</a></footer></main>
+</body>
+</html>

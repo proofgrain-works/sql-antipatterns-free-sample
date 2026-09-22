@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "case_id": "sqlite-function-wrapped-index-031",
+  "base_content_sha256": "ad6847f54401d83de073a27950a570ec3b0f4286ea924f75f7ca5666dc8419cd",
+  "effective_content_sha256": "40db54450f3a03b700f52ed451b73061455b6b8bdb6768a6d7bd350bf074a8af",
+  "setup": "schema_only",
+  "assertions": [
+    {
+      "sql": "SELECT group_concat(id, ',') FROM (SELECT id FROM payments WHERE amount_cents / 100 = 50 ORDER BY id);",
+      "expected": [
+        "2,3,4"
+      ],
+      "purpose": "悪い式が整数除算により5000〜5099セントの3行を返すことを確認する"
+    },
+    {
+      "sql": "SELECT group_concat(id, ',') FROM (SELECT id FROM payments WHERE amount_cents >= 5000 AND amount_cents < 5100 ORDER BY id);",
+      "expected": [
+        "2,3,4"
+      ],
+      "purpose": "半開区間へ書き換えても結果集合が変わらないことを確認する"
+    },
+    {
+      "sql": "EXPLAIN QUERY PLAN SELECT id FROM payments WHERE amount_cents / 100 = 50;",
+      "expected": {
+        "access": "SCAN",
+        "constraints": [],
+        "index": null,
+        "matcher": "eqp_semantics_v1",
+        "table": "payments"
+      },
+      "purpose": "列を式で包んだ条件が全表走査になることを実行計画で検証する"
+    },
+    {
+      "sql": "EXPLAIN QUERY PLAN SELECT id FROM payments WHERE amount_cents >= 5000 AND amount_cents < 5100;",
+      "expected": {
+        "access": "SEARCH",
+        "constraints": [
+          "amount_cents>?",
+          "amount_cents<?"
+        ],
+        "index": "idx_payments_amount",
+        "matcher": "eqp_semantics_v1",
+        "table": "payments"
+      },
+      "purpose": "改善版が通常インデックスの範囲探索を使うことを実行計画で検証する"
+    }
+  ]
+}

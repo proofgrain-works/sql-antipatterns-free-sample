@@ -1,0 +1,18 @@
+<!-- HTML structure: MIT; prose: CC BY 4.0; marked code: MIT. -->
+<!doctype html>
+<html lang="ja-JP">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>概念索引</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<a class="skip" href="#main">本文へ</a>
+<header><a href="../index.html">実行して学ぶSQLアンチパターン：5ケース</a></header>
+<main id="main"><h1>概念索引</h1><section data-license="CC-BY-4.0"><p>関連する分類とケースを対応付けた索引です。各ケースに入力表・目的・期待結果を収録しています。</p><h2>暗黙の結合列</h2><p>NATURAL JOIN等が同名列を追加条件にする危険です。</p><p><a href="../cases/sqlite-natural-join-shared-column-043/index.html">NATURAL JOINで同名列を暗黙の結合条件にする</a></p><h2>NULLを含むmembership</h2><p>IN系の集合判定にNULLが入る場合の3値論理です。</p><p><a href="../cases/sqlite-not-in-null-001/index.html">NULLを含み得るサブクエリにNOT INを使う</a></p><h2>加重平均</h2><p>group平均の単純平均と全体平均を区別します。</p><p><a href="../cases/sqlite-average-of-averages-009/index.html">グループ平均を単純平均して全体平均を求める</a></p><h2>REPLACEの意味</h2><p>置換が更新ではなく削除と挿入になり得る境界です。</p><p><a href="../cases/sqlite-insert-or-replace-cascade-025/index.html">既存行の更新にINSERT OR REPLACEを使う</a></p><h2>索引を使える述語</h2><p>索引列を式で包まず探索範囲を表します。</p><p><a href="../cases/sqlite-function-wrapped-index-031/index.html">インデックス列を式で包んで検索する</a></p></section><footer><p>Proofgrain Works — 実行して学ぶSQLアンチパターン：5ケース — 0.3.0
+公開元: https://github.com/proofgrain-works/sql-antipatterns-free-sample
+解説はCC BY 4.0、コード・実行fixtureはMIT。再利用時は適用noticeを保持し、解説を改変した場合は変更したことを表示してください。
+</p><a href="../LICENSE.txt">許諾の適用範囲</a></footer></main>
+</body>
+</html>

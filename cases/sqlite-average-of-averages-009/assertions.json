@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "case_id": "sqlite-average-of-averages-009",
+  "base_content_sha256": "dd6a60ac35c1650c9d0d139ff482472f67f40439bb7a1f9af37abe39b8ab770e",
+  "effective_content_sha256": "dd6a60ac35c1650c9d0d139ff482472f67f40439bb7a1f9af37abe39b8ab770e",
+  "setup": "schema_only",
+  "assertions": [
+    {
+      "sql": "WITH team_averages AS (SELECT t.department, t.id AS team_id, AVG(s.score) AS team_avg FROM teams AS t JOIN scores AS s ON s.team_id = t.id GROUP BY t.department, t.id) SELECT department_avg FROM (SELECT department, AVG(team_avg) AS department_avg FROM team_averages GROUP BY department) WHERE department = 'Sales';",
+      "expected": [
+        75.0
+      ],
+      "purpose": "平均の単純平均がSalesを75と誤算することを再現する"
+    },
+    {
+      "sql": "SELECT department_avg FROM (SELECT t.department, AVG(s.score) AS department_avg FROM teams AS t JOIN scores AS s ON s.team_id = t.id GROUP BY t.department) WHERE department = 'Sales';",
+      "expected": [
+        62.5
+      ],
+      "purpose": "元の明細を部署単位で集計すると正しいSales平均になることを確認する"
+    },
+    {
+      "sql": "WITH team_stats AS (SELECT t.department, t.id AS team_id, SUM(s.score) AS score_sum, COUNT(*) AS sample_count FROM teams AS t JOIN scores AS s ON s.team_id = t.id GROUP BY t.department, t.id) SELECT SUM(score_sum) / SUM(sample_count) FROM team_stats WHERE department = 'Sales';",
+      "expected": [
+        62.5
+      ],
+      "purpose": "事前集計しか使えない場合も合計と件数による加重平均が同じ結果になることを確認する"
+    }
+  ]
+}

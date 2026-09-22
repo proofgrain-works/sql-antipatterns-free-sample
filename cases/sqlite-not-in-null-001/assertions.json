@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "case_id": "sqlite-not-in-null-001",
+  "base_content_sha256": "c03a7d0a62f6f309aae93060bd4ceaf5c716f2f3ad9d1790159def6f7ae29f04",
+  "effective_content_sha256": "c03a7d0a62f6f309aae93060bd4ceaf5c716f2f3ad9d1790159def6f7ae29f04",
+  "setup": "schema_only",
+  "assertions": [
+    {
+      "sql": "SELECT COUNT(*) = 0 FROM (SELECT id FROM customers WHERE id NOT IN (SELECT customer_id FROM orders));",
+      "expected": [
+        1
+      ],
+      "purpose": "悪いクエリがNULLのため誤って0行になることを再現する"
+    },
+    {
+      "sql": "SELECT group_concat(id, ',') FROM (SELECT c.id FROM customers AS c WHERE NOT EXISTS (SELECT 1 FROM orders AS o WHERE o.customer_id = c.id) ORDER BY c.id);",
+      "expected": [
+        "2,3"
+      ],
+      "purpose": "改善版が未注文の顧客だけを返すことを確認する"
+    },
+    {
+      "sql": "SELECT COUNT(*) FROM (SELECT c.id FROM customers AS c WHERE NOT EXISTS (SELECT 1 FROM orders AS o WHERE o.customer_id = c.id));",
+      "expected": [
+        2
+      ],
+      "purpose": "改善版の件数を検証する"
+    }
+  ]
+}

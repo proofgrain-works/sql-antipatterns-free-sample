@@ -1,0 +1,185 @@
+{
+  "schema_version": 3,
+  "entries": [
+    {
+      "path": "ASSERTION-CONTRACT.md",
+      "scope": "mixed"
+    },
+    {
+      "path": "COMPATIBILITY.md",
+      "scope": "mixed"
+    },
+    {
+      "path": "LICENSE.txt",
+      "scope": "mixed"
+    },
+    {
+      "path": "LICENSES/CC-BY-4.0.txt",
+      "scope": "license-text"
+    },
+    {
+      "path": "LICENSES/MIT.txt",
+      "scope": "license-text"
+    },
+    {
+      "path": "PURCHASE-NOTICE.md",
+      "scope": "mixed"
+    },
+    {
+      "path": "README.md",
+      "scope": "mixed"
+    },
+    {
+      "path": "RELEASE-NOTES.md",
+      "scope": "mixed"
+    },
+    {
+      "path": "RIGHTS-AND-DEPENDENCIES.md",
+      "scope": "mixed"
+    },
+    {
+      "path": "SUPPORT.md",
+      "scope": "mixed"
+    },
+    {
+      "path": "assets/style.css",
+      "scope": "MIT"
+    },
+    {
+      "path": "cases/sqlite-average-of-averages-009/assertions.json",
+      "scope": "MIT"
+    },
+    {
+      "path": "cases/sqlite-average-of-averages-009/bad.sql",
+      "scope": "MIT"
+    },
+    {
+      "path": "cases/sqlite-average-of-averages-009/good.sql",
+      "scope": "MIT"
+    },
+    {
+      "path": "cases/sqlite-average-of-averages-009/index.html",
+      "scope": "mixed"
+    },
+    {
+      "path": "cases/sqlite-average-of-averages-009/schema.sql",
+      "scope": "MIT"
+    },
+    {
+      "path": "cases/sqlite-function-wrapped-index-031/assertions.json",
+      "scope": "MIT"
+    },
+    {
+      "path": "cases/sqlite-function-wrapped-index-031/bad.sql",
+      "scope": "MIT"
+    },
+    {
+      "path": "cases/sqlite-function-wrapped-index-031/good.sql",
+      "scope": "MIT"
+    },
+    {
+      "path": "cases/sqlite-function-wrapped-index-031/index.html",
+      "scope": "mixed"
+    },
+    {
+      "path": "cases/sqlite-function-wrapped-index-031/schema.sql",
+      "scope": "MIT"
+    },
+    {
+      "path": "cases/sqlite-insert-or-replace-cascade-025/assertions.json",
+      "scope": "MIT"
+    },
+    {
+      "path": "cases/sqlite-insert-or-replace-cascade-025/bad.sql",
+      "scope": "MIT"
+    },
+    {
+      "path": "cases/sqlite-insert-or-replace-cascade-025/good.sql",
+      "scope": "MIT"
+    },
+    {
+      "path": "cases/sqlite-insert-or-replace-cascade-025/index.html",
+      "scope": "mixed"
+    },
+    {
+      "path": "cases/sqlite-insert-or-replace-cascade-025/schema.sql",
+      "scope": "MIT"
+    },
+    {
+      "path": "cases/sqlite-natural-join-shared-column-043/assertions.json",
+      "scope": "MIT"
+    },
+    {
+      "path": "cases/sqlite-natural-join-shared-column-043/bad.sql",
+      "scope": "MIT"
+    },
+    {
+      "path": "cases/sqlite-natural-join-shared-column-043/good.sql",
+      "scope": "MIT"
+    },
+    {
+      "path": "cases/sqlite-natural-join-shared-column-043/index.html",
+      "scope": "mixed"
+    },
+    {
+      "path": "cases/sqlite-natural-join-shared-column-043/schema.sql",
+      "scope": "MIT"
+    },
+    {
+      "path": "cases/sqlite-not-in-null-001/assertions.json",
+      "scope": "MIT"
+    },
+    {
+      "path": "cases/sqlite-not-in-null-001/bad.sql",
+      "scope": "MIT"
+    },
+    {
+      "path": "cases/sqlite-not-in-null-001/good.sql",
+      "scope": "MIT"
+    },
+    {
+      "path": "cases/sqlite-not-in-null-001/index.html",
+      "scope": "mixed"
+    },
+    {
+      "path": "cases/sqlite-not-in-null-001/schema.sql",
+      "scope": "MIT"
+    },
+    {
+      "path": "concepts/index.html",
+      "scope": "mixed"
+    },
+    {
+      "path": "families/index.html",
+      "scope": "mixed"
+    },
+    {
+      "path": "index.html",
+      "scope": "mixed"
+    },
+    {
+      "path": "license-index.json",
+      "scope": "MIT"
+    },
+    {
+      "path": "manifest.json",
+      "scope": "MIT"
+    },
+    {
+      "path": "run_assertions.py",
+      "scope": "MIT"
+    },
+    {
+      "path": "run_scenarios.py",
+      "scope": "MIT"
+    },
+    {
+      "path": "sql_evaluator.py",
+      "scope": "MIT"
+    },
+    {
+      "path": "technical-scenarios.json",
+      "scope": "MIT"
+    }
+  ]
+}
